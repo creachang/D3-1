@@ -6,11 +6,11 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <title>Document</title>
     <style>
-      .line{
-        fill: none;
-        stroke-width: 3;
-        stroke: blue;
-      }
+        .line {
+            fill: none;
+            stroke-width: 3;
+            stroke: blue;
+        }
     </style>
 </head>
 
@@ -20,18 +20,39 @@
         var w = 800;
         var parseTime = d3.timeParse("%d-%b-%y")
         var x = d3.scaleTime().range([0, w]);
-        var y = d3.scaleLinear().range([h,0]);
+        var y = d3.scaleLinear().range([h, 0]);
+        var s = d3.select('#s');
+        var axisX = d3.svg.axis()
+            .scale(scaleX)
+            .ticks(10);
+
+        var axisY = d3.svg.axis()
+            .scale(scaleY)
+            .ticks(10);
+
+        s.append('path')
+            .attr({
+                'd': line(data),
+                'stroke': '#09c',
+                'fill': 'none'
+            });
+
+        s.append('g')
+            .call(axisX); //call axisX
+
+        s.append('g')
+            .call(axisY); //call axisY
         d3.csv("./stocks.csv", function(data) {
             data.forEach(function(d) {
                 d.date = parseTime(d.date);
                 d.close = +d.close;
             });
-        x.domain(d3.extent(data, function(d){
-          return d.date;
-        }))
-        y.domain([0,d3.max(data, function(d){
-          return d.close;
-        })])
+            x.domain(d3.extent(data, function(d) {
+                return d.date;
+            }))
+            y.domain([0, d3.max(data, function(d) {
+                return d.close;
+            })])
 
             var ctrl = d3.select("body").append("svg").attr("width", w).attr("height", h)
             var valueline = d3.line().x(function(d) {
@@ -45,6 +66,6 @@
         });
     </script>
 
-        </body>
+</body>
 
 </html>
