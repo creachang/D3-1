@@ -7,7 +7,9 @@
     <title>Document</title>
     <style>
       .line{
-        fill:none;
+        fill: none;
+        stroke-width: 3;
+        stroke: blue;
       }
     </style>
 </head>
@@ -17,6 +19,8 @@
         var h = 600;
         var w = 800;
         var parseTime = d3.timeParse("%d-%b-%y")
+        var x = d3.scaleTime().range([0, w])
+        var y = d3.scaleLinear().range([h,0])
         d3.csv("./stocks.csv", function(data) {
             data.forEach(function(d) {
                 d.date = parseTime(d.date);
